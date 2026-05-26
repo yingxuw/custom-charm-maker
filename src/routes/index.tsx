@@ -524,42 +524,54 @@ function Screen4() {
       </div>
 
       {/* Center character stage */}
-      <div className="absolute left-[90px] right-[330px] top-[60px] bottom-3 z-0">
-        <div className="relative w-full h-full flex items-end justify-center">
-          <img src={VARIANTS[variant].img} className="h-[280px] object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.45)]" alt="" />
-          {/* sparkles around */}
+      <div className="absolute left-[70px] top-[60px] bottom-[54px] z-0" style={{ right: 486 }}>
+        <div className="relative w-full h-full rounded-2xl bg-gradient-to-b from-indigo-400/25 to-purple-800/40 border border-white/15 overflow-hidden flex items-end justify-center">
+          <img src={VARIANTS[variant].img} className="h-[260px] object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.45)]" alt="" />
           <div className="absolute top-6 left-6 text-white/70 text-xl">✦</div>
           <div className="absolute top-12 right-10 text-pink-200 text-lg">✧</div>
           <div className="absolute bottom-16 left-10 text-yellow-200">★</div>
-        </div>
-
-        {/* Property switcher */}
-        <div className="absolute -bottom-1 left-1 right-1">
-          <div className="rounded-2xl bg-white/15 backdrop-blur border border-white/30 px-2 py-1.5 shadow-lg">
-            <div className="flex items-center justify-between mb-1">
-              <div className="text-white text-[10px] font-black flex items-center gap-1">
-                <span className="bg-fuchsia-400 text-white text-[8px] px-1 rounded">NEW</span>
-                皮肤属性（同一皮肤多版本切换）
-              </div>
-              <span className="text-white/70 text-[9px]">星梦公主 · {VARIANTS[variant].t}</span>
-            </div>
-            <div className="flex gap-1.5">
-              {VARIANTS.map((v, i) => (
-                <button
-                  key={v.t}
-                  onClick={() => setVariant(i)}
-                  className={`flex-1 rounded-full px-2 py-1 text-[10px] font-bold border-2 transition ${
-                    variant === i
-                      ? "bg-gradient-to-r from-yellow-300 to-orange-400 text-slate-900 border-white shadow-[0_0_12px_rgba(253,224,71,0.7)]"
-                      : "bg-white/15 text-white border-white/30"
-                  }`}
-                >
-                  {i >= 1 && <span className="text-fuchsia-500 mr-0.5">✦</span>}
-                  {v.t}
-                </button>
-              ))}
-            </div>
+          <div className="absolute top-2 left-2 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/30">
+            星梦公主 · {VARIANTS[variant].t}
           </div>
+        </div>
+      </div>
+
+      {/* Vertical Variant Switcher - right of character stage */}
+      <div className="absolute top-[60px] bottom-[6px] z-10" style={{ left: 332, width: 86 }}>
+        <div className="relative w-full h-full rounded-2xl bg-white/12 backdrop-blur border border-white/30 p-1.5 flex flex-col gap-1 shadow-lg">
+          <div className="text-center text-white text-[9px] font-black leading-tight pb-0.5 border-b border-white/20">
+            <span className="bg-fuchsia-400 text-white text-[7px] px-1 rounded mr-0.5">NEW</span>
+            定制版本
+          </div>
+          {VARIANTS.map((v, i) => {
+            const active = variant === i;
+            return (
+              <button
+                key={v.t}
+                onClick={() => setVariant(i)}
+                className={`relative flex-1 rounded-xl border-2 transition flex flex-col items-center justify-end overflow-hidden ${
+                  active
+                    ? "border-yellow-300 bg-gradient-to-b from-fuchsia-400/40 to-purple-500/40 shadow-[0_0_14px_rgba(253,224,71,0.85)] scale-[1.03]"
+                    : "border-white/30 bg-white/10 hover:border-white/60"
+                }`}
+              >
+                {i >= 1 && (
+                  <span className="absolute top-0.5 left-0.5 text-[7px] font-black bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white px-1 rounded z-10">✦</span>
+                )}
+                {active && (
+                  <span className="absolute top-0.5 right-0.5 text-[9px] text-yellow-300 z-10">★</span>
+                )}
+                <div className="flex-1 w-full flex items-end justify-center overflow-hidden">
+                  <img src={v.img} className="h-[54px] object-contain" alt="" />
+                </div>
+                <div className={`w-full text-center text-[9px] font-black leading-none py-0.5 ${
+                  active ? "bg-yellow-300 text-slate-900" : "text-white bg-white/10"
+                }`}>
+                  {v.t}
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
