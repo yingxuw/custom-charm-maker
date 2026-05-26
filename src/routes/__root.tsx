@@ -72,8 +72,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "亲子学盒 · AI定制皮肤原型" },
+      { name: "description", content: "儿童向横屏手游 AI 定制皮肤功能高保真原型" },
       { name: "author", content: "Lovable" },
       { property: "og:title", content: "Lovable App" },
       { property: "og:description", content: "Lovable Generated Project" },
