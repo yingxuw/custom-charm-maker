@@ -524,7 +524,7 @@ function Screen4() {
       </div>
 
       {/* Center character stage */}
-      <div className="absolute left-[70px] top-[60px] bottom-[54px] z-0" style={{ right: 420 }}>
+      <div className="absolute left-[70px] top-[60px] bottom-[54px] z-0" style={{ right: 486 }}>
         <div className="relative w-full h-full rounded-2xl bg-gradient-to-b from-indigo-400/25 to-purple-800/40 border border-white/15 overflow-hidden flex items-end justify-center">
           <img src={VARIANTS[variant].img} className="h-[260px] object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.45)]" alt="" />
           <div className="absolute top-6 left-6 text-white/70 text-xl">✦</div>
