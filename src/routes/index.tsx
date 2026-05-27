@@ -885,6 +885,21 @@ function Screen7({ onCustomize }: { onCustomize: () => void }) {
                 </button>
               );
             })}
+            {/* + 定制新版本 入口卡片 */}
+            <button
+              onClick={() => setShowNewVer(true)}
+              className="relative shrink-0 h-[78px] rounded-xl border-2 border-dashed border-yellow-300/80 bg-gradient-to-br from-fuchsia-500/30 via-purple-500/30 to-indigo-500/40 flex flex-col items-center justify-center overflow-hidden hover:shadow-[0_0_14px_rgba(253,224,71,0.7)] transition"
+            >
+              <span className="absolute top-0.5 left-0.5 text-[6px] font-black bg-yellow-300 text-slate-900 px-1 rounded z-10">VIP</span>
+              <span className="absolute top-1 right-1 text-[8px] text-pink-200 animate-pulse">✦</span>
+              <span className="absolute bottom-6 right-1 text-[7px] text-cyan-200">✧</span>
+              <div className="relative flex items-center justify-center w-7 h-7 rounded-full bg-white/20 border border-white/60 mb-0.5">
+                <span className="text-white text-base font-black leading-none">+</span>
+                <span className="absolute -top-1 -right-1 text-[8px] text-yellow-200">?</span>
+              </div>
+              <div className="text-white text-[8px] font-black leading-none">定制新版本</div>
+              <div className="text-yellow-200 text-[7px] mt-0.5 leading-none">消耗1次机会</div>
+            </button>
           </div>
           <div className="text-center text-white/50 text-[8px] mt-0.5">↕ 滑动</div>
         </div>
