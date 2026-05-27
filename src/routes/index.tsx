@@ -19,6 +19,17 @@ const SCREENS = [
 
 function Index() {
   const [screen, setScreen] = useState(1);
+  const [isVip, setIsVip] = useState(false);
+  const [showDemo, setShowDemo] = useState(false);
+
+  const handleEnterFromHome = () => {
+    if (!isVip) {
+      setShowDemo(true);
+    } else {
+      setScreen(2);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full bg-slate-900 text-white py-6 px-4 flex flex-col items-center gap-4 font-sans">
       <div className="flex items-center gap-2 flex-wrap justify-center max-w-[900px]">
@@ -35,27 +46,145 @@ function Index() {
             {s.id}. {s.name}
           </button>
         ))}
+        <button
+          onClick={() => setIsVip((v) => !v)}
+          className={`px-3 py-1.5 rounded-full text-xs font-black border-2 ${
+            isVip
+              ? "bg-yellow-300 text-slate-900 border-yellow-100"
+              : "bg-slate-800 text-slate-300 border-slate-600"
+          }`}
+          title="演示用：切换VIP身份（影响主页入口与生成行为）"
+        >
+          {isVip ? "👑 VIP身份" : "非VIP身份"}
+        </button>
+        <button
+          onClick={() => setShowDemo(true)}
+          className="px-3 py-1.5 rounded-full text-xs font-bold border-2 bg-fuchsia-600/40 text-white border-fuchsia-300/60"
+        >
+          预览：动效演示弹窗
+        </button>
       </div>
 
       <div
         className="relative shadow-[0_20px_80px_rgba(0,0,0,0.6)] rounded-[28px] overflow-hidden"
         style={{ width: 812, height: 375 }}
       >
-        {screen === 1 && <Screen1 onEnter={() => setScreen(2)} />}
+        {screen === 1 && <Screen1 onEnter={handleEnterFromHome} />}
         {screen === 2 && (
           <Screen2
+            isVip={isVip}
+            setIsVip={setIsVip}
+            onOpenDemo={() => setShowDemo(true)}
             onGenerateOk={() => setScreen(4)}
             onGenerateFail={() => setScreen(3)}
           />
         )}
-        {screen === 3 && <Screen2 toast onGenerateOk={() => setScreen(4)} onGenerateFail={() => setScreen(3)} />}
+        {screen === 3 && <Screen2 toast isVip={isVip} setIsVip={setIsVip} onOpenDemo={() => setShowDemo(true)} onGenerateOk={() => setScreen(4)} onGenerateFail={() => setScreen(3)} />}
         {screen === 4 && <Screen4Generating onDone={() => setScreen(6)} onBack={() => setScreen(5)} />}
         {screen === 5 && <Screen4Generating modal onDone={() => setScreen(6)} onBack={() => setScreen(5)} onLeave={() => setScreen(1)} onStay={() => setScreen(4)} />}
         {screen === 6 && <Screen6 onSave={() => setScreen(7)} />}
         {screen === 7 && <Screen7 />}
+
+        {showDemo && (
+          <DemoModal
+            onClose={() => setShowDemo(false)}
+            onTry={() => { setShowDemo(false); setScreen(2); }}
+            onUpgrade={() => { setIsVip(true); setShowDemo(false); setScreen(2); }}
+          />
+        )}
       </div>
 
       <p className="text-xs text-slate-400">画布尺寸 812 × 375 · 横屏儿童手游高保真原型</p>
+    </div>
+  );
+}
+
+/* ---------- Demo Modal (动效演示) ---------- */
+function DemoModal({
+  onClose,
+  onTry,
+  onUpgrade,
+}: {
+  onClose: () => void;
+  onTry: () => void;
+  onUpgrade: () => void;
+}) {
+  const STEPS = [
+    { t: "普通皮肤", d: "选择已拥有的角色", img: charOriginal, c: "from-slate-300 to-slate-500", icon: "👤" },
+    { t: "输入想法", d: "一句话描述风格", img: null, c: "from-sky-300 to-indigo-500", icon: "💭" },
+    { t: "魔法生成", d: "AI 施展皮肤魔法", img: null, c: "from-fuchsia-400 to-purple-600", icon: "✨" },
+    { t: "3款候选", d: "挑选最喜欢的一款", img: charStar, c: "from-amber-300 to-pink-500", icon: "🎁" },
+    { t: "保存装扮", d: "立即换上专属皮肤", img: charIce, c: "from-cyan-300 to-emerald-500", icon: "👑" },
+  ];
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setStep((s) => (s + 1) % STEPS.length), 1400);
+    return () => clearInterval(id);
+  }, []);
+  const cur = STEPS[step];
+
+  return (
+    <div className="absolute inset-0 z-40 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+      <div className="relative w-[600px] rounded-3xl bg-gradient-to-b from-fuchsia-100 via-white to-amber-50 border-[3px] border-yellow-200 p-3 shadow-2xl">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-b from-fuchsia-500 to-purple-600 text-white font-black text-[12px] px-4 py-1 rounded-full border-2 border-white shadow-lg whitespace-nowrap">
+          ✨ 一句话，把普通皮肤变成专属酷炫皮肤 ✨
+        </div>
+        <button onClick={onClose} className="absolute top-1.5 right-3 text-slate-400 text-lg font-bold">×</button>
+
+        <div className="mt-2 grid grid-cols-5 gap-1.5">
+          {STEPS.map((s, i) => {
+            const active = i === step;
+            const done = i < step;
+            return (
+              <div key={s.t} className="flex flex-col items-center">
+                <div
+                  className={`relative w-full h-[78px] rounded-xl border-2 bg-gradient-to-br ${s.c} flex items-end justify-center overflow-hidden transition-all ${
+                    active
+                      ? "border-yellow-300 shadow-[0_0_18px_rgba(253,224,71,0.9)] scale-[1.06]"
+                      : done
+                      ? "border-fuchsia-300 opacity-90"
+                      : "border-white/70 opacity-70"
+                  }`}
+                >
+                  {s.img ? (
+                    <img src={s.img} className="h-[90px] object-contain" alt="" />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-3xl drop-shadow">{s.icon}</div>
+                  )}
+                  <span className="absolute top-0.5 left-0.5 bg-white/85 text-slate-700 text-[8px] font-black px-1 rounded">
+                    {i + 1}
+                  </span>
+                  {active && (
+                    <span className="absolute -top-1 -right-1 text-yellow-300 text-base animate-ping">✦</span>
+                  )}
+                </div>
+                <div className={`text-[10px] font-black mt-0.5 ${active ? "text-fuchsia-600" : "text-slate-700"}`}>
+                  {s.t}
+                </div>
+                <div className="text-[8px] text-slate-500 leading-tight text-center">{s.d}</div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-2 rounded-xl bg-gradient-to-r from-fuchsia-100 via-pink-100 to-amber-100 border border-fuchsia-200 px-3 py-1.5 text-center text-[11px] font-bold text-fuchsia-700">
+          当前：<span className="text-slate-800">{cur.t}</span> · {cur.d}
+        </div>
+
+        <div className="flex gap-2 mt-2">
+          <GameBtn
+            variant="ghost"
+            onClick={onTry}
+            className="px-3 py-1.5 text-[12px] !text-slate-700 !bg-slate-100 !border-slate-300"
+          >
+            先看看玩法
+          </GameBtn>
+          <GameBtn variant="yellow" onClick={onUpgrade} className="flex-1 py-1.5 text-[13px]">
+            👑 开通VIP
+          </GameBtn>
+        </div>
+        <div className="text-center text-[9px] text-slate-400 mt-1">开通后立即解锁定制机会 · 可在背包自由切换</div>
+      </div>
     </div>
   );
 }
