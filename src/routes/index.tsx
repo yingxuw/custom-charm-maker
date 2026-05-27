@@ -247,22 +247,21 @@ const SKIN_LIST = [
 ];
 
 const STYLE_PRESETS = [
-  { t: "梦幻精灵", c: "from-fuchsia-400 to-purple-500" },
-  { t: "冰雪魔法", c: "from-cyan-300 to-sky-500" },
-  { t: "宇宙探险", c: "from-indigo-400 to-violet-600" },
-  { t: "闪电机甲", c: "from-slate-300 to-blue-600" },
-  { t: "森林守护者", c: "from-lime-300 to-emerald-500" },
-  { t: "火焰英雄", c: "from-amber-400 to-rose-500" },
-  { t: "中国风小侠", c: "from-rose-300 to-red-500" },
-  { t: "星光偶像", c: "from-amber-300 to-pink-400" },
+  { t: "梦幻精灵", c: "from-fuchsia-400 to-purple-500", text: "我想要像梦幻小精灵一样闪闪发光", img: charOriginal },
+  { t: "冰雪魔法", c: "from-cyan-300 to-sky-500", text: "我想要冰雪公主一样会发光的裙子", img: charIce },
+  { t: "宇宙探险", c: "from-indigo-400 to-violet-600", text: "我想要像小宇航员一样去太空冒险", img: charStar },
+  { t: "闪电机甲", c: "from-slate-300 to-blue-600", text: "我想要像闪电机甲一样酷酷的感觉", img: charStar },
+  { t: "森林守护者", c: "from-lime-300 to-emerald-500", text: "我想要像森林小守护者一样有树叶披风", img: charSweet },
+  { t: "火焰英雄", c: "from-amber-400 to-rose-500", text: "我想要像火焰小英雄一样身上有火花", img: charSweet },
+  { t: "中国风小侠", c: "from-rose-300 to-red-500", text: "我想要像中国风小侠一样威风", img: charOriginal },
+  { t: "星光偶像", c: "from-amber-300 to-pink-400", text: "我想要像星光小偶像一样闪闪亮亮", img: charStar },
 ];
 
-const PLACEHOLDERS = [
-  "我想要像冰龙战士一样酷",
-  "我想要彩虹魔法风",
-  "我想要像宇宙探险家一样厉害",
-  "我想要闪电机甲风",
-  "我想要梦幻精灵风",
+// 官方成品（指向上方风格按钮的索引，形成联动）
+const OFFICIAL_SAMPLES = [
+  { name: "冰雪公主款", tag: "官方成品", styleIdx: 1 },
+  { name: "闪电机甲款", tag: "官方成品", styleIdx: 3 },
+  { name: "森林守护者款", tag: "官方成品", styleIdx: 4 },
 ];
 
 function Screen2({
@@ -277,21 +276,50 @@ function Screen2({
   const [selected, setSelected] = useState(0);
   const [text, setText] = useState("");
   const [tab, setTab] = useState(0);
+  const [styleIdx, setStyleIdx] = useState<number | null>(null);
+  const [isVip, setIsVip] = useState(false);
+  const [showVip, setShowVip] = useState(false);
+
   const skin = SKIN_LIST[selected];
-  const placeholder = PLACEHOLDERS[selected % PLACEHOLDERS.length];
+  const previewImg = styleIdx !== null ? STYLE_PRESETS[styleIdx].img : skin.img;
+  const previewLabel = styleIdx !== null ? `${skin.name} · ${STYLE_PRESETS[styleIdx].t}` : skin.name;
+
+  function pickStyle(i: number) {
+    setStyleIdx(i);
+    setText(STYLE_PRESETS[i].text);
+  }
+  function handleGenerate() {
+    if (!isVip) { setShowVip(true); return; }
+    onGenerateOk();
+  }
+
   return (
     <div className={`relative w-full h-full ${dreamBg}`}>
       <Sparkles />
       <BackBtn />
-      <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
+      <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-10">
         <div className="bg-gradient-to-r from-amber-300 to-orange-400 rounded-full px-5 py-1.5 border-2 border-white shadow-lg">
           <span className="text-white font-black text-sm drop-shadow">✨ AI 定制皮肤 ✨</span>
         </div>
       </div>
-      <div className="absolute top-3 right-4 z-10"><Currency cheese={1781} /></div>
+      <div className="absolute top-2.5 right-4 z-10 flex items-center gap-2">
+        {/* demo: 切换VIP身份 */}
+        <button
+          onClick={() => setIsVip((v) => !v)}
+          className={`text-[9px] font-black px-2 py-0.5 rounded-full border-2 ${
+            isVip
+              ? "bg-yellow-300 text-slate-900 border-yellow-100"
+              : "bg-white/20 text-white border-white/40"
+          }`}
+          title="演示用：切换VIP身份"
+        >
+          {isVip ? "VIP ✓" : "非VIP"}
+        </button>
+        <Currency cheese={1781} />
+      </div>
 
       {/* LEFT skin list */}
-      <div className="absolute left-3 top-[60px] bottom-3 w-[160px] bg-white/12 backdrop-blur border border-white/25 rounded-2xl p-2 flex flex-col gap-1.5 z-10">
+      <div className="absolute left-3 top-[52px] bottom-3 w-[150px] bg-white/12 backdrop-blur border border-white/25 rounded-2xl p-2 flex flex-col gap-1.5 z-10">
         <div className="text-white text-[11px] font-black px-1">选择要定制的皮肤</div>
         <div className="flex gap-1 px-1">
           {["传说", "神话", "至臻"].map((t, i) => (
@@ -317,31 +345,35 @@ function Screen2({
                   : "border-white/30 bg-white/10"
               }`}
             >
-              <div className={`h-[58px] rounded-lg bg-gradient-to-br ${s.color} flex items-end justify-center overflow-hidden`}>
-                <img src={s.img} className="h-[66px] object-contain" alt="" />
+              <div className={`h-[52px] rounded-lg bg-gradient-to-br ${s.color} flex items-end justify-center overflow-hidden`}>
+                <img src={s.img} className="h-[60px] object-contain" alt="" />
               </div>
-              <div className="text-white text-[10px] font-bold mt-0.5 leading-tight">{s.name}</div>
+              <div className="text-white text-[9px] font-bold mt-0.5 leading-tight">{s.name}</div>
             </button>
           ))}
         </div>
       </div>
 
       {/* CENTER stage */}
-      <div className="absolute left-[175px] right-[265px] top-[60px] bottom-3 z-0">
+      <div className="absolute left-[165px] right-[275px] top-[52px] bottom-3 z-0">
         <div className="relative w-full h-full rounded-2xl bg-gradient-to-b from-indigo-400/40 to-purple-700/60 border border-white/20 overflow-hidden">
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-[radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.25),transparent_70%)]" />
           <div className="absolute inset-0 flex items-end justify-center pb-2">
-            <img src={skin.img} className="h-[280px] object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" alt="" />
+            <img src={previewImg} className="h-[260px] object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" alt="" />
           </div>
           <div className="absolute top-2 left-2 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/30">
-            当前选中：{skin.name}
+            预览：{previewLabel}
           </div>
+          {styleIdx !== null && (
+            <div className="absolute top-2 right-2 bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full border border-white/40 shadow">
+              ✦ 已联动「{STYLE_PRESETS[styleIdx].t}」
+            </div>
+          )}
           <div className="absolute bottom-1 left-0 right-0 text-center text-white/80 text-[10px]">
             模型与动作不变，仅定制服装贴图风格
           </div>
         </div>
 
-        {/* Toast overlay */}
         {toast && (
           <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 animate-pulse">
             <div className="bg-gradient-to-b from-rose-500 to-pink-600 border-2 border-white rounded-2xl px-4 py-2 shadow-[0_0_20px_rgba(244,63,94,0.7)] flex items-center gap-2">
@@ -352,45 +384,137 @@ function Screen2({
         )}
       </div>
 
-      {/* RIGHT input + generate */}
-      <div className="absolute right-3 top-[60px] bottom-3 w-[252px] flex flex-col gap-1.5 z-10">
-        <div className="text-white text-[11px] font-black">描述你想要的皮肤风格</div>
+      {/* RIGHT input + samples + presets + generate */}
+      <div className="absolute right-3 top-[52px] bottom-3 w-[262px] flex flex-col gap-1 z-10">
+        {/* 官方成品区 —— 效果展示，联动风格按钮 */}
+        <div className="rounded-xl bg-gradient-to-b from-amber-200/25 to-fuchsia-300/15 border border-yellow-200/60 p-1.5">
+          <div className="flex items-center justify-between px-0.5">
+            <div className="text-white text-[10px] font-black flex items-center gap-1">
+              <span className="text-yellow-200">🎁</span>试试这些效果
+            </div>
+            <div className="text-white/70 text-[8px]">点击即可联动风格</div>
+          </div>
+          <div className="grid grid-cols-3 gap-1 mt-1">
+            {OFFICIAL_SAMPLES.map((s) => {
+              const sp = STYLE_PRESETS[s.styleIdx];
+              const active = styleIdx === s.styleIdx;
+              return (
+                <button
+                  key={s.name}
+                  onClick={() => pickStyle(s.styleIdx)}
+                  className={`relative rounded-lg p-0.5 border-2 transition flex flex-col ${
+                    active
+                      ? "border-yellow-300 bg-white/30 shadow-[0_0_10px_rgba(253,224,71,0.8)]"
+                      : "border-white/40 bg-white/15"
+                  }`}
+                >
+                  <div className={`h-[44px] rounded-md bg-gradient-to-br ${sp.c} overflow-hidden flex items-end justify-center`}>
+                    <img src={sp.img} className="h-[52px] object-contain" alt="" />
+                  </div>
+                  <div className="text-white text-[8px] font-black leading-tight mt-0.5 text-center truncate">{s.name}</div>
+                  <span className="absolute -top-1 -left-1 bg-fuchsia-500 text-white text-[7px] font-black px-1 rounded-full border border-white/70 shadow">官方</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="text-white text-[10px] font-black mt-1 px-0.5">描述你想要的皮肤风格</div>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder={placeholder}
-          className="w-full h-[48px] rounded-xl bg-white/95 text-slate-800 text-[11px] p-2 resize-none placeholder:text-slate-400 border-2 border-white shadow-inner"
+          placeholder="比如：我想要像冰雪公主一样会发光的裙子"
+          className="w-full h-[40px] rounded-xl bg-white/95 text-slate-800 text-[11px] p-1.5 resize-none placeholder:text-slate-400 border-2 border-white shadow-inner"
         />
 
-        <div className="text-white text-[10px] font-black mt-0.5">想要哪种风格</div>
+        <div className="text-white text-[10px] font-black mt-0.5 px-0.5 flex items-center gap-1">
+          想要哪种风格 <span className="text-white/60 font-normal text-[8px]">（点击即填入想法）</span>
+        </div>
         <div className="grid grid-cols-4 gap-1">
-          {STYLE_PRESETS.map((p) => (
-            <button
-              key={p.t}
-              onClick={() => setText("我想要" + p.t + "风")}
-              className={`rounded-full bg-gradient-to-r ${p.c} text-white text-[9px] font-bold py-1 border border-white/60 shadow`}
-            >
-              {p.t}
-            </button>
-          ))}
+          {STYLE_PRESETS.map((p, i) => {
+            const active = styleIdx === i;
+            return (
+              <button
+                key={p.t}
+                onClick={() => pickStyle(i)}
+                className={`rounded-full bg-gradient-to-r ${p.c} text-white text-[9px] font-bold py-1 border shadow transition ${
+                  active ? "border-yellow-300 ring-2 ring-yellow-200 scale-[1.04]" : "border-white/60"
+                }`}
+              >
+                {p.t}
+              </button>
+            );
+          })}
         </div>
 
-        <div className="rounded-lg bg-white/10 border border-white/25 px-2 py-1 text-[9px] text-white/90 leading-tight mt-1">
-          · 系统生成 <b className="text-yellow-300">3 款</b>候选 · 可选 1 款保存到背包<br />
-          · 审核不通过不扣次数；进入生成后扣除 1 次
-        </div>
-
-        <div className="mt-auto flex items-center justify-between px-1">
-          <span className="text-white/90 text-[10px] font-bold">剩余可用次数：<b className="text-yellow-300">1</b></span>
-          <span className="text-white/60 text-[9px]">机会可累积</span>
+        <div className="mt-auto flex items-center justify-between px-1 pt-1">
+          <span className="text-white/90 text-[10px] font-bold">剩余次数：<b className="text-yellow-300">{isVip ? 1 : 0}</b></span>
+          <span className="text-white/60 text-[9px]">{isVip ? "审核不通过不扣次数" : "VIP 限定功能"}</span>
         </div>
         <div className="flex gap-1.5">
-          <GameBtn variant="ghost" onClick={onGenerateFail} className="px-3 py-2 text-[10px]">模拟审核失败</GameBtn>
-          <GameBtn variant="yellow" onClick={onGenerateOk} className="flex-1 py-2 text-sm">
+          <GameBtn variant="ghost" onClick={onGenerateFail} className="px-2 py-1.5 text-[10px]">模拟审核失败</GameBtn>
+          <GameBtn variant="yellow" onClick={handleGenerate} className="flex-1 py-1.5 text-sm">
             ✨ 开始生成
           </GameBtn>
         </div>
       </div>
+
+      {/* 非VIP开通弹窗 */}
+      {showVip && (
+        <div className="absolute inset-0 z-30 bg-black/55 backdrop-blur-sm flex items-center justify-center">
+          <div className="relative w-[420px] rounded-3xl bg-gradient-to-b from-fuchsia-100 via-white to-amber-50 border-[3px] border-yellow-200 p-4 shadow-2xl">
+            {/* 顶部彩带标题 */}
+            <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-b from-fuchsia-500 to-purple-600 text-white font-black text-[13px] px-4 py-1 rounded-full border-2 border-white shadow-lg whitespace-nowrap">
+              ✨ 开通VIP，立即定制专属皮肤 ✨
+            </div>
+            <button onClick={() => setShowVip(false)} className="absolute top-2 right-3 text-slate-400 text-lg font-bold">×</button>
+
+            <div className="mt-3 text-center text-slate-700 text-[11px] font-bold">
+              解锁 AI 定制皮肤玩法 · 让你的角色独一无二
+            </div>
+
+            {/* 小图展示 */}
+            <div className="flex gap-2 justify-center mt-2">
+              {OFFICIAL_SAMPLES.map((s) => {
+                const sp = STYLE_PRESETS[s.styleIdx];
+                return (
+                  <div key={s.name} className="w-[90px]">
+                    <div className={`h-[70px] rounded-xl bg-gradient-to-br ${sp.c} border-2 border-white shadow flex items-end justify-center overflow-hidden`}>
+                      <img src={sp.img} className="h-[80px] object-contain" alt="" />
+                    </div>
+                    <div className="text-center text-[9px] font-black text-slate-700 mt-0.5">{s.name}</div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 权益 */}
+            <div className="mt-2 rounded-xl bg-white/80 border border-fuchsia-200 px-3 py-1.5 text-[10px] text-slate-700 leading-relaxed">
+              <div>✦ 可使用 <b className="text-fuchsia-600">AI 定制皮肤</b> 功能</div>
+              <div>✦ 每完成 <b className="text-fuchsia-600">7 次亲子约定学</b> 获得 1 次机会</div>
+              <div>✦ 定制结果可保存到背包并自由装扮</div>
+            </div>
+
+            <div className="flex gap-2 mt-3">
+              <GameBtn
+                variant="ghost"
+                onClick={() => setShowVip(false)}
+                className="px-3 py-2 text-[12px] !text-slate-600 !bg-slate-100 !border-slate-300"
+              >
+                再看看
+              </GameBtn>
+              <GameBtn
+                variant="yellow"
+                onClick={() => { setIsVip(true); setShowVip(false); }}
+                className="flex-1 py-2 text-[13px]"
+              >
+                👑 立即开通VIP
+              </GameBtn>
+            </div>
+            <div className="text-center text-[9px] text-slate-400 mt-1">开通后即可立即使用本次生成</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
