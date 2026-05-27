@@ -548,19 +548,16 @@ function Screen2({
         </div>
 
         <div className="text-[9px] text-white/70 text-center mt-0.5 leading-tight">
-          最终效果以生成结果为准，每次生成 3 款候选
+          AI 会一次生成 3 款候选，最终效果以生成结果为准
         </div>
 
         <div className="mt-auto flex items-center justify-between px-1 pt-1">
           <span className="text-white/90 text-[10px] font-bold">剩余次数：<b className="text-yellow-300">{isVip ? 1 : 0}</b></span>
-          <span className="text-white/60 text-[9px]">{isVip ? "审核不通过不扣次数" : "VIP 限定功能"}</span>
+          <span className="text-white/60 text-[9px]">{isVip ? "审核不通过不扣次数" : "完成 7 次约定学得 1 次"}</span>
         </div>
-        <div className="flex gap-1.5">
-          <GameBtn variant="ghost" onClick={onGenerateFail} className="px-2 py-1.5 text-[10px]">模拟审核失败</GameBtn>
-          <GameBtn variant="yellow" onClick={handleGenerate} className="flex-1 py-1.5 text-sm">
-            ✨ 开始生成
-          </GameBtn>
-        </div>
+        <GameBtn variant="yellow" onClick={handleGenerate} className="w-full py-1.5 text-sm">
+          ✨ 开始生成
+        </GameBtn>
       </div>
 
       {/* VIP引导弹窗（静态） */}
