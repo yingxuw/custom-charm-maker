@@ -774,7 +774,7 @@ function Screen6({ onSave }: { onSave: () => void }) {
             <button onClick={() => setCompare("new")} className={`px-2 py-1 rounded-full ${compare === "new" ? "bg-yellow-300 text-slate-900" : "text-white"}`}>定制后</button>
           </div>
           <div className="absolute bottom-1 left-0 right-0 text-center text-white/80 text-[10px]">
-            预览：梦幻公主 · {r.name}
+            预览：梦幻公主 · 方案 {idx + 1}
           </div>
         </div>
       </div>
@@ -783,8 +783,8 @@ function Screen6({ onSave }: { onSave: () => void }) {
       <div className="absolute right-3 top-[60px] bottom-3 w-[185px] flex flex-col gap-2 z-10">
         <div className="rounded-2xl bg-white/15 border border-white/30 p-3 text-center">
           <div className="text-white/70 text-[10px]">已选择</div>
-          <div className="text-white font-black text-[16px] mt-0.5">{r.name}</div>
-          <div className="text-yellow-200 text-[10px] font-bold mt-1">方案 {idx + 1} / 3</div>
+          <div className="text-white font-black text-[16px] mt-0.5">方案 {idx + 1}</div>
+          <div className="text-yellow-200 text-[10px] font-bold mt-1">共 3 款候选</div>
         </div>
 
         <div className="flex-1" />
