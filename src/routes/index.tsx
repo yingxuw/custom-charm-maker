@@ -811,9 +811,10 @@ const OUTFITS = [
   { name: "中国小侠套", c: "from-rose-300 to-red-500", img: charIce, owned: false },
 ];
 
-function Screen7() {
+function Screen7({ onCustomize }: { onCustomize: () => void }) {
   const [variant, setVariant] = useState(1);
   const [outfit, setOutfit] = useState(0);
+  const [showNewVer, setShowNewVer] = useState(false);
   const cur = VARIANTS[variant];
   return (
     <div className={`relative w-full h-full ${dreamBg}`}>
