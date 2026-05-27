@@ -802,16 +802,16 @@ function Screen6({ onSave }: { onSave: () => void }) {
 
 /* ---------- SCREEN 7: Backpack — outfits + variants ---------- */
 const VARIANTS = [
-  { t: "原版", name: "独角精灵·原版", img: charOriginal },
-  { t: "冰雪公主", name: "独角精灵·冰雪公主", img: charIce },
-  { t: "闪电机甲", name: "独角精灵·闪电机甲", img: charStar },
-  { t: "森林守护者", name: "独角精灵·森林守护者", img: charSweet },
+  { t: "原版", name: "独角精灵 · 原版", img: charOriginal, custom: false },
+  { t: "版本 1", name: "独角精灵 · 定制版本 1", img: charIce, custom: true },
+  { t: "版本 2", name: "独角精灵 · 定制版本 2", img: charStar, custom: true },
+  { t: "版本 3", name: "独角精灵 · 定制版本 3", img: charSweet, custom: true },
 ];
 
 const OUTFITS = [
   { name: "梦幻公主套", c: "from-pink-300 to-fuchsia-500", img: charOriginal, owned: true },
-  { name: "冰雪魔法套", c: "from-cyan-300 to-sky-500", img: charIce, owned: true, custom: true },
-  { name: "星梦偶像套", c: "from-indigo-400 to-purple-600", img: charStar, owned: true, custom: true },
+  { name: "", c: "from-cyan-300 to-sky-500", img: charIce, owned: true, custom: true },
+  { name: "", c: "from-indigo-400 to-purple-600", img: charStar, owned: true, custom: true },
   { name: "甜心娃娃套", c: "from-pink-200 to-rose-400", img: charSweet, owned: false },
   { name: "森林精灵套", c: "from-lime-300 to-emerald-500", img: charOriginal, owned: false },
   { name: "中国小侠套", c: "from-rose-300 to-red-500", img: charIce, owned: false },
