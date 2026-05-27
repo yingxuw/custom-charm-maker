@@ -257,7 +257,7 @@ function GameBtn({
 }
 
 /* ---------- SCREEN 1: 亲子学盒主页 ---------- */
-function Screen1({ onEnter }: { onEnter: () => void }) {
+function Screen1({ onEnter, hasPending }: { onEnter: () => void; hasPending?: boolean }) {
   const categories = ["月令宝藏", "至臻宝藏", "普通宝藏", "亲子学盒"];
   return (
     <div className={`relative w-full h-full ${dreamBg}`}>
