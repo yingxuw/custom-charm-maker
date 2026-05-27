@@ -21,8 +21,10 @@ function Index() {
   const [screen, setScreen] = useState(1);
   const [isVip, setIsVip] = useState(false);
   const [showDemo, setShowDemo] = useState(false);
+  const [hasPending, setHasPending] = useState(false);
 
   const handleEnterFromHome = () => {
+    setHasPending(false);
     if (!isVip) {
       setShowDemo(true);
     } else {
@@ -69,7 +71,7 @@ function Index() {
         className="relative shadow-[0_20px_80px_rgba(0,0,0,0.6)] rounded-[28px] overflow-hidden"
         style={{ width: 812, height: 375 }}
       >
-        {screen === 1 && <Screen1 onEnter={handleEnterFromHome} />}
+        {screen === 1 && <Screen1 onEnter={handleEnterFromHome} hasPending={hasPending} />}
         {screen === 2 && (
           <Screen2
             isVip={isVip}
@@ -81,7 +83,7 @@ function Index() {
         )}
         {screen === 3 && <Screen2 toast isVip={isVip} setIsVip={setIsVip} onOpenDemo={() => setShowDemo(true)} onGenerateOk={() => setScreen(4)} onGenerateFail={() => setScreen(3)} />}
         {screen === 4 && <Screen4Generating onDone={() => setScreen(6)} onBack={() => setScreen(5)} />}
-        {screen === 5 && <Screen4Generating modal onDone={() => setScreen(6)} onBack={() => setScreen(5)} onLeave={() => setScreen(1)} onStay={() => setScreen(4)} />}
+        {screen === 5 && <Screen4Generating modal onDone={() => setScreen(6)} onBack={() => setScreen(5)} onLeave={() => { setHasPending(true); setScreen(1); }} onStay={() => setScreen(4)} />}
         {screen === 6 && <Screen6 onSave={() => setScreen(7)} />}
         {screen === 7 && <Screen7 onCustomize={() => setScreen(2)} />}
 
@@ -255,7 +257,7 @@ function GameBtn({
 }
 
 /* ---------- SCREEN 1: 亲子学盒主页 ---------- */
-function Screen1({ onEnter }: { onEnter: () => void }) {
+function Screen1({ onEnter, hasPending }: { onEnter: () => void; hasPending?: boolean }) {
   const categories = ["月令宝藏", "至臻宝藏", "普通宝藏", "亲子学盒"];
   return (
     <div className={`relative w-full h-full ${dreamBg}`}>
@@ -353,12 +355,15 @@ function Screen1({ onEnter }: { onEnter: () => void }) {
             onClick={onEnter}
             className="relative w-full rounded-2xl bg-gradient-to-b from-fuchsia-500 to-purple-600 border-2 border-white/80 px-3 py-2.5 text-left shadow-xl"
           >
-            <div className="flex items-center justify-between">
-              <div className="text-white font-black text-[15px] leading-tight">AI 定制皮肤</div>
-              <span className="text-[9px] bg-yellow-300 text-slate-900 rounded-full px-2 py-0.5 font-black border border-white/60">VIP 限定</span>
-            </div>
+            {hasPending && (
+              <span className="absolute -top-1 -right-1 z-10 flex items-center justify-center">
+                <span className="absolute w-3 h-3 bg-rose-500 rounded-full animate-ping opacity-75" />
+                <span className="relative w-3 h-3 bg-rose-500 rounded-full border-2 border-white" />
+              </span>
+            )}
+            <div className="text-white font-black text-[15px] leading-tight">AI 定制皮肤</div>
             <div className="text-[10px] text-white/95 mt-1.5 leading-tight">
-              完成 7 次亲子约定学可解锁 1 次机会
+              {hasPending ? "上次生成仍在进行中，点击查看" : "完成 7 次亲子约定学可解锁 1 次机会"}
             </div>
           </button>
         </div>
@@ -447,8 +452,8 @@ function Screen2({
       {/* LEFT skin list */}
       <div className="absolute left-3 top-[52px] bottom-3 w-[150px] bg-white/12 backdrop-blur border border-white/25 rounded-2xl p-2 flex flex-col gap-1.5 z-10">
         <div className="text-white text-[11px] font-black px-1">选择要定制的皮肤</div>
-        <div className="flex gap-1 px-1">
-          {["传说", "神话", "至臻"].map((t, i) => (
+        <div className="flex gap-1 px-1 flex-wrap">
+          {["全部", "传说", "神话", "至臻"].map((t, i) => (
             <button
               key={t}
               onClick={() => setTab(i)}
@@ -543,19 +548,16 @@ function Screen2({
         </div>
 
         <div className="text-[9px] text-white/70 text-center mt-0.5 leading-tight">
-          最终效果以生成结果为准，每次生成 3 款候选
+          AI 会一次生成 3 款候选，最终效果以生成结果为准
         </div>
 
         <div className="mt-auto flex items-center justify-between px-1 pt-1">
           <span className="text-white/90 text-[10px] font-bold">剩余次数：<b className="text-yellow-300">{isVip ? 1 : 0}</b></span>
-          <span className="text-white/60 text-[9px]">{isVip ? "审核不通过不扣次数" : "VIP 限定功能"}</span>
+          <span className="text-white/60 text-[9px]">{isVip ? "审核不通过不扣次数" : "完成 7 次约定学得 1 次"}</span>
         </div>
-        <div className="flex gap-1.5">
-          <GameBtn variant="ghost" onClick={onGenerateFail} className="px-2 py-1.5 text-[10px]">模拟审核失败</GameBtn>
-          <GameBtn variant="yellow" onClick={handleGenerate} className="flex-1 py-1.5 text-sm">
-            ✨ 开始生成
-          </GameBtn>
-        </div>
+        <GameBtn variant="yellow" onClick={handleGenerate} className="w-full py-1.5 text-sm">
+          ✨ 开始生成
+        </GameBtn>
       </div>
 
       {/* VIP引导弹窗（静态） */}
@@ -672,8 +674,11 @@ function Screen4Generating({
             />
           </div>
           <div className="flex justify-between text-[9px] text-white/80 mt-1 font-bold">
-            <span>通常约 20 秒</span>
+            <span>预计 20 秒</span>
             <span>高峰期最多 5 分钟</span>
+          </div>
+          <div className="text-center text-[10px] text-white/90 mt-1.5 leading-snug">
+            魔法施展中，预计 20 秒～5 分钟，请耐心等待 ✨
           </div>
         </div>
 
@@ -691,7 +696,8 @@ function Screen4Generating({
             </div>
             <div className="mt-3 text-slate-700 text-[12px] leading-relaxed text-center">
               当前生成任务<b className="text-fuchsia-600">仍会继续</b>，<br />
-              你可以稍后回到「定制中心」查看结果。
+              完成后请回到<b>「亲子学盒」</b>入口查看，<br />
+              该入口会出现<span className="inline-flex items-center mx-0.5 align-middle"><span className="w-1.5 h-1.5 bg-rose-500 rounded-full" /></span>红点提醒。
             </div>
             <div className="mt-2 rounded-xl bg-amber-50 border border-amber-200 px-3 py-1.5 text-[11px] text-amber-700 font-bold text-center">
               ⚠ 本次机会已扣除（生成中退出不取消任务）
@@ -713,9 +719,9 @@ function Screen4Generating({
 
 /* ---------- SCREEN 6: Result preview (精简) ---------- */
 const RESULTS = [
-  { name: "星梦精灵款", img: charStar, color: "from-indigo-400 to-purple-600" },
-  { name: "冰雪公主款", img: charIce, color: "from-cyan-300 to-sky-500" },
-  { name: "机甲探险款", img: charSweet, color: "from-fuchsia-400 to-pink-500" },
+  { img: charStar, color: "from-indigo-400 to-purple-600" },
+  { img: charIce, color: "from-cyan-300 to-sky-500" },
+  { img: charSweet, color: "from-fuchsia-400 to-pink-500" },
 ];
 
 function Screen6({ onSave }: { onSave: () => void }) {
@@ -737,7 +743,7 @@ function Screen6({ onSave }: { onSave: () => void }) {
       <div className="absolute left-3 top-[60px] bottom-3 w-[150px] flex flex-col gap-2 z-10">
         {RESULTS.map((res, i) => (
           <button
-            key={res.name}
+            key={i}
             onClick={() => setIdx(i)}
             className={`relative flex-1 rounded-xl border-2 p-1.5 transition flex flex-col ${
               idx === i
@@ -745,12 +751,12 @@ function Screen6({ onSave }: { onSave: () => void }) {
                 : "border-white/30 bg-white/10"
             }`}
           >
-            <div className={`flex-1 rounded-lg bg-gradient-to-br ${res.color} overflow-hidden flex items-end justify-center`}>
+            <div className={`flex-1 rounded-lg bg-gradient-to-br ${res.color} overflow-hidden flex items-end justify-center relative`}>
+              <span className="absolute top-1 left-1 text-[8px] font-black bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white px-1 rounded">✦定制</span>
               <img src={res.img} className="h-[90px] object-contain" alt="" />
             </div>
-            <div className="flex items-center justify-between mt-1 px-0.5">
-              <div className="text-white text-[10px] font-black leading-tight truncate">{res.name}</div>
-              <span className="text-[8px] font-black bg-white/25 text-white rounded px-1 border border-white/30 shrink-0">方案{i + 1}</span>
+            <div className="flex items-center justify-center mt-1 px-0.5">
+              <span className="text-[9px] font-black bg-white/25 text-white rounded px-1.5 py-0.5 border border-white/30">方案 {i + 1}</span>
             </div>
           </button>
         ))}
@@ -768,7 +774,7 @@ function Screen6({ onSave }: { onSave: () => void }) {
             <button onClick={() => setCompare("new")} className={`px-2 py-1 rounded-full ${compare === "new" ? "bg-yellow-300 text-slate-900" : "text-white"}`}>定制后</button>
           </div>
           <div className="absolute bottom-1 left-0 right-0 text-center text-white/80 text-[10px]">
-            预览：梦幻公主 · {r.name}
+            预览：梦幻公主 · 方案 {idx + 1}
           </div>
         </div>
       </div>
@@ -777,8 +783,8 @@ function Screen6({ onSave }: { onSave: () => void }) {
       <div className="absolute right-3 top-[60px] bottom-3 w-[185px] flex flex-col gap-2 z-10">
         <div className="rounded-2xl bg-white/15 border border-white/30 p-3 text-center">
           <div className="text-white/70 text-[10px]">已选择</div>
-          <div className="text-white font-black text-[16px] mt-0.5">{r.name}</div>
-          <div className="text-yellow-200 text-[10px] font-bold mt-1">方案 {idx + 1} / 3</div>
+          <div className="text-white font-black text-[16px] mt-0.5">方案 {idx + 1}</div>
+          <div className="text-yellow-200 text-[10px] font-bold mt-1">共 3 款候选</div>
         </div>
 
         <div className="flex-1" />
@@ -796,16 +802,16 @@ function Screen6({ onSave }: { onSave: () => void }) {
 
 /* ---------- SCREEN 7: Backpack — outfits + variants ---------- */
 const VARIANTS = [
-  { t: "原版", name: "独角精灵·原版", img: charOriginal },
-  { t: "冰雪公主", name: "独角精灵·冰雪公主", img: charIce },
-  { t: "闪电机甲", name: "独角精灵·闪电机甲", img: charStar },
-  { t: "森林守护者", name: "独角精灵·森林守护者", img: charSweet },
+  { t: "原版", name: "独角精灵 · 原版", img: charOriginal, custom: false },
+  { t: "版本 1", name: "独角精灵 · 定制版本 1", img: charIce, custom: true },
+  { t: "版本 2", name: "独角精灵 · 定制版本 2", img: charStar, custom: true },
+  { t: "版本 3", name: "独角精灵 · 定制版本 3", img: charSweet, custom: true },
 ];
 
 const OUTFITS = [
   { name: "梦幻公主套", c: "from-pink-300 to-fuchsia-500", img: charOriginal, owned: true },
-  { name: "冰雪魔法套", c: "from-cyan-300 to-sky-500", img: charIce, owned: true, custom: true },
-  { name: "星梦偶像套", c: "from-indigo-400 to-purple-600", img: charStar, owned: true, custom: true },
+  { name: "", c: "from-cyan-300 to-sky-500", img: charIce, owned: true, custom: true },
+  { name: "", c: "from-indigo-400 to-purple-600", img: charStar, owned: true, custom: true },
   { name: "甜心娃娃套", c: "from-pink-200 to-rose-400", img: charSweet, owned: false },
   { name: "森林精灵套", c: "from-lime-300 to-emerald-500", img: charOriginal, owned: false },
   { name: "中国小侠套", c: "from-rose-300 to-red-500", img: charIce, owned: false },
@@ -946,7 +952,7 @@ function Screen7({ onCustomize }: { onCustomize: () => void }) {
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-base">🔒</div>
                   )}
                 </div>
-                <div className="text-white text-[9px] font-bold mt-0.5 leading-tight truncate text-center">{o.name}</div>
+                <div className="text-white text-[9px] font-bold mt-0.5 leading-tight truncate text-center">{o.custom ? "定制款" : o.name}</div>
               </button>
             );
           })}
