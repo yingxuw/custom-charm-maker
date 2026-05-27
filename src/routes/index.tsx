@@ -696,7 +696,8 @@ function Screen4Generating({
             </div>
             <div className="mt-3 text-slate-700 text-[12px] leading-relaxed text-center">
               当前生成任务<b className="text-fuchsia-600">仍会继续</b>，<br />
-              你可以稍后回到「定制中心」查看结果。
+              完成后请回到<b>「亲子学盒」</b>入口查看，<br />
+              该入口会出现<span className="inline-flex items-center mx-0.5 align-middle"><span className="w-1.5 h-1.5 bg-rose-500 rounded-full" /></span>红点提醒。
             </div>
             <div className="mt-2 rounded-xl bg-amber-50 border border-amber-200 px-3 py-1.5 text-[11px] text-amber-700 font-bold text-center">
               ⚠ 本次机会已扣除（生成中退出不取消任务）
