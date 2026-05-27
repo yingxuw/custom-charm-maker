@@ -397,16 +397,21 @@ function Screen2({
   onGenerateOk,
   onGenerateFail,
   toast,
+  isVip,
+  setIsVip,
+  onOpenDemo,
 }: {
   onGenerateOk: () => void;
   onGenerateFail: () => void;
   toast?: boolean;
+  isVip: boolean;
+  setIsVip: (v: boolean) => void;
+  onOpenDemo: () => void;
 }) {
   const [selected, setSelected] = useState(0);
   const [text, setText] = useState("");
   const [tab, setTab] = useState(0);
   const [styleIdx, setStyleIdx] = useState<number | null>(null);
-  const [isVip, setIsVip] = useState(false);
   const [showVip, setShowVip] = useState(false);
 
   const skin = SKIN_LIST[selected];
@@ -432,13 +437,10 @@ function Screen2({
         </div>
       </div>
       <div className="absolute top-2.5 right-4 z-10 flex items-center gap-2">
-        {/* demo: 切换VIP身份 */}
         <button
-          onClick={() => setIsVip((v) => !v)}
+          onClick={() => setIsVip(!isVip)}
           className={`text-[9px] font-black px-2 py-0.5 rounded-full border-2 ${
-            isVip
-              ? "bg-yellow-300 text-slate-900 border-yellow-100"
-              : "bg-white/20 text-white border-white/40"
+            isVip ? "bg-yellow-300 text-slate-900 border-yellow-100" : "bg-white/20 text-white border-white/40"
           }`}
           title="演示用：切换VIP身份"
         >
@@ -493,11 +495,13 @@ function Screen2({
           <div className="absolute top-2 left-2 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/30">
             预览：{previewLabel}
           </div>
-          {styleIdx !== null && (
-            <div className="absolute top-2 right-2 bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full border border-white/40 shadow">
-              ✦ 已联动「{STYLE_PRESETS[styleIdx].t}」
-            </div>
-          )}
+          {/* 玩法演示入口（用户主动点击） */}
+          <button
+            onClick={onOpenDemo}
+            className="absolute top-2 right-2 bg-white/90 text-fuchsia-600 text-[10px] font-black px-2 py-0.5 rounded-full border border-fuchsia-300 shadow hover:scale-105 transition"
+          >
+            🎬 玩法演示
+          </button>
           <div className="absolute bottom-1 left-0 right-0 text-center text-white/80 text-[10px]">
             模型与动作不变，仅定制服装贴图风格
           </div>
@@ -513,50 +517,17 @@ function Screen2({
         )}
       </div>
 
-      {/* RIGHT input + samples + presets + generate */}
-      <div className="absolute right-3 top-[52px] bottom-3 w-[262px] flex flex-col gap-1 z-10">
-        {/* 官方成品区 —— 效果展示，联动风格按钮 */}
-        <div className="rounded-xl bg-gradient-to-b from-amber-200/25 to-fuchsia-300/15 border border-yellow-200/60 p-1.5">
-          <div className="flex items-center justify-between px-0.5">
-            <div className="text-white text-[10px] font-black flex items-center gap-1">
-              <span className="text-yellow-200">🎁</span>试试这些效果
-            </div>
-            <div className="text-white/70 text-[8px]">点击即可联动风格</div>
-          </div>
-          <div className="grid grid-cols-3 gap-1 mt-1">
-            {OFFICIAL_SAMPLES.map((s) => {
-              const sp = STYLE_PRESETS[s.styleIdx];
-              const active = styleIdx === s.styleIdx;
-              return (
-                <button
-                  key={s.name}
-                  onClick={() => pickStyle(s.styleIdx)}
-                  className={`relative rounded-lg p-0.5 border-2 transition flex flex-col ${
-                    active
-                      ? "border-yellow-300 bg-white/30 shadow-[0_0_10px_rgba(253,224,71,0.8)]"
-                      : "border-white/40 bg-white/15"
-                  }`}
-                >
-                  <div className={`h-[44px] rounded-md bg-gradient-to-br ${sp.c} overflow-hidden flex items-end justify-center`}>
-                    <img src={sp.img} className="h-[52px] object-contain" alt="" />
-                  </div>
-                  <div className="text-white text-[8px] font-black leading-tight mt-0.5 text-center truncate">{s.name}</div>
-                  <span className="absolute -top-1 -left-1 bg-fuchsia-500 text-white text-[7px] font-black px-1 rounded-full border border-white/70 shadow">官方</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="text-white text-[10px] font-black mt-1 px-0.5">描述你想要的皮肤风格</div>
+      {/* RIGHT input + presets + generate */}
+      <div className="absolute right-3 top-[52px] bottom-3 w-[262px] flex flex-col gap-1.5 z-10">
+        <div className="text-white text-[11px] font-black px-0.5">描述你想要的皮肤风格</div>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="比如：我想要像冰雪公主一样会发光的裙子"
-          className="w-full h-[40px] rounded-xl bg-white/95 text-slate-800 text-[11px] p-1.5 resize-none placeholder:text-slate-400 border-2 border-white shadow-inner"
+          className="w-full h-[56px] rounded-xl bg-white/95 text-slate-800 text-[11px] p-2 resize-none placeholder:text-slate-400 border-2 border-white shadow-inner"
         />
 
-        <div className="text-white text-[10px] font-black mt-0.5 px-0.5 flex items-center gap-1">
+        <div className="text-white text-[11px] font-black mt-0.5 px-0.5 flex items-center gap-1">
           想要哪种风格 <span className="text-white/60 font-normal text-[8px]">（点击即填入想法）</span>
         </div>
         <div className="grid grid-cols-4 gap-1">
@@ -576,6 +547,10 @@ function Screen2({
           })}
         </div>
 
+        <div className="text-[9px] text-white/70 text-center mt-0.5 leading-tight">
+          最终效果以生成结果为准，每次生成 3 款候选
+        </div>
+
         <div className="mt-auto flex items-center justify-between px-1 pt-1">
           <span className="text-white/90 text-[10px] font-bold">剩余次数：<b className="text-yellow-300">{isVip ? 1 : 0}</b></span>
           <span className="text-white/60 text-[9px]">{isVip ? "审核不通过不扣次数" : "VIP 限定功能"}</span>
@@ -588,47 +563,31 @@ function Screen2({
         </div>
       </div>
 
-      {/* 非VIP开通弹窗 */}
+      {/* VIP引导弹窗（静态） */}
       {showVip && (
         <div className="absolute inset-0 z-30 bg-black/55 backdrop-blur-sm flex items-center justify-center">
-          <div className="relative w-[420px] rounded-3xl bg-gradient-to-b from-fuchsia-100 via-white to-amber-50 border-[3px] border-yellow-200 p-4 shadow-2xl">
-            {/* 顶部彩带标题 */}
+          <div className="relative w-[440px] rounded-3xl bg-gradient-to-b from-fuchsia-100 via-white to-amber-50 border-[3px] border-yellow-200 p-4 shadow-2xl">
             <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-b from-fuchsia-500 to-purple-600 text-white font-black text-[13px] px-4 py-1 rounded-full border-2 border-white shadow-lg whitespace-nowrap">
-              ✨ 开通VIP，立即定制专属皮肤 ✨
+              👑 开通VIP，解锁 AI 定制皮肤
             </div>
             <button onClick={() => setShowVip(false)} className="absolute top-2 right-3 text-slate-400 text-lg font-bold">×</button>
 
-            <div className="mt-3 text-center text-slate-700 text-[11px] font-bold">
-              解锁 AI 定制皮肤玩法 · 让你的角色独一无二
+            <div className="mt-3 text-center text-slate-700 text-[12px] font-black">
+              把你的想法，变成专属皮肤
             </div>
 
-            {/* 小图展示 */}
-            <div className="flex gap-2 justify-center mt-2">
-              {OFFICIAL_SAMPLES.map((s) => {
-                const sp = STYLE_PRESETS[s.styleIdx];
-                return (
-                  <div key={s.name} className="w-[90px]">
-                    <div className={`h-[70px] rounded-xl bg-gradient-to-br ${sp.c} border-2 border-white shadow flex items-end justify-center overflow-hidden`}>
-                      <img src={sp.img} className="h-[80px] object-contain" alt="" />
-                    </div>
-                    <div className="text-center text-[9px] font-black text-slate-700 mt-0.5">{s.name}</div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* 权益 */}
-            <div className="mt-2 rounded-xl bg-white/80 border border-fuchsia-200 px-3 py-1.5 text-[10px] text-slate-700 leading-relaxed">
-              <div>✦ 可使用 <b className="text-fuchsia-600">AI 定制皮肤</b> 功能</div>
-              <div>✦ 每完成 <b className="text-fuchsia-600">7 次亲子约定学</b> 获得 1 次机会</div>
-              <div>✦ 定制结果可保存到背包并自由装扮</div>
+            <div className="mt-2 rounded-xl bg-white/90 border border-fuchsia-200 px-3 py-2 text-[11px] text-slate-700 leading-relaxed">
+              <div>✦ 每完成 <b className="text-fuchsia-600">7 次亲子约定学</b> 获得 1 次定制机会</div>
+              <div>✦ 一次生成 <b className="text-fuchsia-600">3 款候选效果</b></div>
+              <div>✦ 可选择 1 款保存并装扮</div>
+              <div>✦ 定制版本可在 <b className="text-fuchsia-600">背包</b> 中切换使用</div>
             </div>
 
             <div className="flex gap-2 mt-3">
               <GameBtn
                 variant="ghost"
                 onClick={() => setShowVip(false)}
-                className="px-3 py-2 text-[12px] !text-slate-600 !bg-slate-100 !border-slate-300"
+                className="px-4 py-2 text-[12px] !text-slate-600 !bg-slate-100 !border-slate-300"
               >
                 再看看
               </GameBtn>
@@ -637,10 +596,9 @@ function Screen2({
                 onClick={() => { setIsVip(true); setShowVip(false); }}
                 className="flex-1 py-2 text-[13px]"
               >
-                👑 立即开通VIP
+                立即开通VIP
               </GameBtn>
             </div>
-            <div className="text-center text-[9px] text-slate-400 mt-1">开通后即可立即使用本次生成</div>
           </div>
         </div>
       )}
