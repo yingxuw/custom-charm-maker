@@ -452,8 +452,8 @@ function Screen2({
       {/* LEFT skin list */}
       <div className="absolute left-3 top-[52px] bottom-3 w-[150px] bg-white/12 backdrop-blur border border-white/25 rounded-2xl p-2 flex flex-col gap-1.5 z-10">
         <div className="text-white text-[11px] font-black px-1">选择要定制的皮肤</div>
-        <div className="flex gap-1 px-1">
-          {["传说", "神话", "至臻"].map((t, i) => (
+        <div className="flex gap-1 px-1 flex-wrap">
+          {["全部", "传说", "神话", "至臻"].map((t, i) => (
             <button
               key={t}
               onClick={() => setTab(i)}
