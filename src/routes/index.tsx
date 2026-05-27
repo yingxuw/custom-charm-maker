@@ -952,7 +952,7 @@ function Screen7({ onCustomize }: { onCustomize: () => void }) {
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-base">🔒</div>
                   )}
                 </div>
-                <div className="text-white text-[9px] font-bold mt-0.5 leading-tight truncate text-center">{o.name}</div>
+                <div className="text-white text-[9px] font-bold mt-0.5 leading-tight truncate text-center">{o.custom ? "定制款" : o.name}</div>
               </button>
             );
           })}
