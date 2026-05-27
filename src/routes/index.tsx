@@ -71,7 +71,7 @@ function Index() {
         className="relative shadow-[0_20px_80px_rgba(0,0,0,0.6)] rounded-[28px] overflow-hidden"
         style={{ width: 812, height: 375 }}
       >
-        {screen === 1 && <Screen1 onEnter={handleEnterFromHome} />}
+        {screen === 1 && <Screen1 onEnter={handleEnterFromHome} hasPending={hasPending} />}
         {screen === 2 && (
           <Screen2
             isVip={isVip}
@@ -83,7 +83,7 @@ function Index() {
         )}
         {screen === 3 && <Screen2 toast isVip={isVip} setIsVip={setIsVip} onOpenDemo={() => setShowDemo(true)} onGenerateOk={() => setScreen(4)} onGenerateFail={() => setScreen(3)} />}
         {screen === 4 && <Screen4Generating onDone={() => setScreen(6)} onBack={() => setScreen(5)} />}
-        {screen === 5 && <Screen4Generating modal onDone={() => setScreen(6)} onBack={() => setScreen(5)} onLeave={() => setScreen(1)} onStay={() => setScreen(4)} />}
+        {screen === 5 && <Screen4Generating modal onDone={() => setScreen(6)} onBack={() => setScreen(5)} onLeave={() => { setHasPending(true); setScreen(1); }} onStay={() => setScreen(4)} />}
         {screen === 6 && <Screen6 onSave={() => setScreen(7)} />}
         {screen === 7 && <Screen7 onCustomize={() => setScreen(2)} />}
 
