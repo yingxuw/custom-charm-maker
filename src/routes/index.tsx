@@ -719,9 +719,9 @@ function Screen4Generating({
 
 /* ---------- SCREEN 6: Result preview (精简) ---------- */
 const RESULTS = [
-  { name: "星梦精灵款", img: charStar, color: "from-indigo-400 to-purple-600" },
-  { name: "冰雪公主款", img: charIce, color: "from-cyan-300 to-sky-500" },
-  { name: "机甲探险款", img: charSweet, color: "from-fuchsia-400 to-pink-500" },
+  { img: charStar, color: "from-indigo-400 to-purple-600" },
+  { img: charIce, color: "from-cyan-300 to-sky-500" },
+  { img: charSweet, color: "from-fuchsia-400 to-pink-500" },
 ];
 
 function Screen6({ onSave }: { onSave: () => void }) {
