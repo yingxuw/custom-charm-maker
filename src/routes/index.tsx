@@ -962,6 +962,35 @@ function Screen7({ onCustomize }: { onCustomize: () => void }) {
           </div>
         ))}
       </div>
+
+      {/* 定制新版本 引导弹窗 */}
+      {showNewVer && (
+        <div className="absolute inset-0 z-30 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center" onClick={() => setShowNewVer(false)}>
+          <div onClick={(e) => e.stopPropagation()} className="relative w-[420px] rounded-3xl bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 border-4 border-yellow-300 shadow-[0_0_30px_rgba(253,224,71,0.6)] p-4">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white text-[11px] font-black px-3 py-1 rounded-full border-2 border-white shadow">✨ AI 魔法定制 ✨</div>
+            <div className="flex items-center gap-3 mt-2">
+              <div className="relative w-[88px] h-[88px] rounded-2xl bg-gradient-to-br from-fuchsia-400 to-purple-600 border-2 border-white flex items-center justify-center overflow-hidden shrink-0">
+                <img src={cur.img} className="h-[78px] object-contain" alt="" />
+                <span className="absolute top-1 right-1 text-yellow-200 text-xs animate-pulse">✦</span>
+              </div>
+              <div className="flex-1">
+                <div className="text-slate-900 text-base font-black leading-tight">为这套皮肤定制新版本</div>
+                <div className="text-slate-600 text-[10px] mt-0.5">当前皮肤：<b className="text-fuchsia-600">{cur.name}</b></div>
+              </div>
+            </div>
+            <div className="mt-2.5 bg-white/70 rounded-xl border-2 border-white p-2 text-[11px] text-slate-700 space-y-1 leading-snug">
+              <div>✦ 基于当前皮肤生成，<b>不改变模型和动作</b></div>
+              <div>✦ 输入你的想法，AI 会生成 <b className="text-fuchsia-600">3 款候选效果</b></div>
+              <div>✦ 可选择 1 款<b>保存到背包</b></div>
+              <div className="text-[10px] text-slate-500">* 最终效果以生成结果为准</div>
+            </div>
+            <div className="flex gap-2 mt-3">
+              <GameBtn variant="ghost" onClick={() => setShowNewVer(false)} className="flex-1 py-2 text-[12px] !text-slate-700 !bg-white !border-slate-300">再看看</GameBtn>
+              <GameBtn variant="yellow" onClick={() => { setShowNewVer(false); onCustomize(); }} className="flex-1 py-2 text-[13px]">🎨 去定制</GameBtn>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
