@@ -743,7 +743,7 @@ function Screen6({ onSave }: { onSave: () => void }) {
       <div className="absolute left-3 top-[60px] bottom-3 w-[150px] flex flex-col gap-2 z-10">
         {RESULTS.map((res, i) => (
           <button
-            key={res.name}
+            key={i}
             onClick={() => setIdx(i)}
             className={`relative flex-1 rounded-xl border-2 p-1.5 transition flex flex-col ${
               idx === i
@@ -751,12 +751,12 @@ function Screen6({ onSave }: { onSave: () => void }) {
                 : "border-white/30 bg-white/10"
             }`}
           >
-            <div className={`flex-1 rounded-lg bg-gradient-to-br ${res.color} overflow-hidden flex items-end justify-center`}>
+            <div className={`flex-1 rounded-lg bg-gradient-to-br ${res.color} overflow-hidden flex items-end justify-center relative`}>
+              <span className="absolute top-1 left-1 text-[8px] font-black bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white px-1 rounded">✦定制</span>
               <img src={res.img} className="h-[90px] object-contain" alt="" />
             </div>
-            <div className="flex items-center justify-between mt-1 px-0.5">
-              <div className="text-white text-[10px] font-black leading-tight truncate">{res.name}</div>
-              <span className="text-[8px] font-black bg-white/25 text-white rounded px-1 border border-white/30 shrink-0">方案{i + 1}</span>
+            <div className="flex items-center justify-center mt-1 px-0.5">
+              <span className="text-[9px] font-black bg-white/25 text-white rounded px-1.5 py-0.5 border border-white/30">方案 {i + 1}</span>
             </div>
           </button>
         ))}
