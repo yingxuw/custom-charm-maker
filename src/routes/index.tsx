@@ -355,12 +355,15 @@ function Screen1({ onEnter, hasPending }: { onEnter: () => void; hasPending?: bo
             onClick={onEnter}
             className="relative w-full rounded-2xl bg-gradient-to-b from-fuchsia-500 to-purple-600 border-2 border-white/80 px-3 py-2.5 text-left shadow-xl"
           >
-            <div className="flex items-center justify-between">
-              <div className="text-white font-black text-[15px] leading-tight">AI 定制皮肤</div>
-              <span className="text-[9px] bg-yellow-300 text-slate-900 rounded-full px-2 py-0.5 font-black border border-white/60">VIP 限定</span>
-            </div>
+            {hasPending && (
+              <span className="absolute -top-1 -right-1 z-10 flex items-center justify-center">
+                <span className="absolute w-3 h-3 bg-rose-500 rounded-full animate-ping opacity-75" />
+                <span className="relative w-3 h-3 bg-rose-500 rounded-full border-2 border-white" />
+              </span>
+            )}
+            <div className="text-white font-black text-[15px] leading-tight">AI 定制皮肤</div>
             <div className="text-[10px] text-white/95 mt-1.5 leading-tight">
-              完成 7 次亲子约定学可解锁 1 次机会
+              {hasPending ? "上次生成仍在进行中，点击查看" : "完成 7 次亲子约定学可解锁 1 次机会"}
             </div>
           </button>
         </div>
