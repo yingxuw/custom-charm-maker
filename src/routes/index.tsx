@@ -21,8 +21,10 @@ function Index() {
   const [screen, setScreen] = useState(1);
   const [isVip, setIsVip] = useState(false);
   const [showDemo, setShowDemo] = useState(false);
+  const [hasPending, setHasPending] = useState(false);
 
   const handleEnterFromHome = () => {
+    setHasPending(false);
     if (!isVip) {
       setShowDemo(true);
     } else {
