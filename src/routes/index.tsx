@@ -674,8 +674,11 @@ function Screen4Generating({
             />
           </div>
           <div className="flex justify-between text-[9px] text-white/80 mt-1 font-bold">
-            <span>通常约 20 秒</span>
+            <span>预计 20 秒</span>
             <span>高峰期最多 5 分钟</span>
+          </div>
+          <div className="text-center text-[10px] text-white/90 mt-1.5 leading-snug">
+            魔法施展中，预计 20 秒～5 分钟，请耐心等待 ✨
           </div>
         </div>
 
