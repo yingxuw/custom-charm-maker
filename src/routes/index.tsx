@@ -386,12 +386,7 @@ const STYLE_PRESETS = [
   { t: "星光偶像", c: "from-amber-300 to-pink-400", text: "我想要像星光小偶像一样闪闪亮亮", img: charStar },
 ];
 
-// 官方成品（指向上方风格按钮的索引，形成联动）
-const OFFICIAL_SAMPLES = [
-  { name: "冰雪公主款", tag: "官方成品", styleIdx: 1 },
-  { name: "闪电机甲款", tag: "官方成品", styleIdx: 3 },
-  { name: "森林守护者款", tag: "官方成品", styleIdx: 4 },
-];
+
 
 function Screen2({
   onGenerateOk,
