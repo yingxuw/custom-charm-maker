@@ -83,7 +83,7 @@ function Index() {
         {screen === 4 && <Screen4Generating onDone={() => setScreen(6)} onBack={() => setScreen(5)} />}
         {screen === 5 && <Screen4Generating modal onDone={() => setScreen(6)} onBack={() => setScreen(5)} onLeave={() => setScreen(1)} onStay={() => setScreen(4)} />}
         {screen === 6 && <Screen6 onSave={() => setScreen(7)} />}
-        {screen === 7 && <Screen7 />}
+        {screen === 7 && <Screen7 onCustomize={() => setScreen(2)} />}
 
         {showDemo && (
           <DemoModal
