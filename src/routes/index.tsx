@@ -348,22 +348,32 @@ function Screen1({ onEnter, hasPending }: { onEnter: () => void; hasPending?: bo
           完成【亲子约定学】每天获得<br />1次抽学盒机会
         </div>
 
-        {/* AI Customize entry — cleaner */}
+        {/* AI Customize entry — yellow card style */}
         <div className="mt-auto relative">
-          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-fuchsia-400 via-pink-300 to-amber-300 blur opacity-80 animate-pulse" />
+          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-fuchsia-400 via-pink-300 to-amber-300 blur opacity-70 animate-pulse" />
           <button
             onClick={onEnter}
-            className="relative w-full rounded-2xl bg-gradient-to-b from-fuchsia-500 to-purple-600 border-2 border-white/80 px-3 py-2.5 text-left shadow-xl"
+            className="relative w-full rounded-2xl bg-gradient-to-b from-amber-300 to-yellow-400 border-2 border-white shadow-xl overflow-hidden h-[78px] pl-[68px] pr-2"
           >
             {hasPending && (
-              <span className="absolute -top-1 -right-1 z-10 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 z-20 flex items-center justify-center">
                 <span className="absolute w-3 h-3 bg-rose-500 rounded-full animate-ping opacity-75" />
                 <span className="relative w-3 h-3 bg-rose-500 rounded-full border-2 border-white" />
               </span>
             )}
-            <div className="text-white font-black text-[15px] leading-tight">AI 定制皮肤</div>
-            <div className="text-[10px] text-white/95 mt-1.5 leading-tight">
-              {hasPending ? "上次生成仍在进行中，点击查看" : "完成 7 次亲子约定学可解锁 1 次机会"}
+            {/* Character on left, slightly overflowing */}
+            <img src={charOriginal} alt="" className="absolute -left-2 -bottom-1 w-[70px] h-[70px] object-contain drop-shadow-md" />
+            {/* 可定制次数 badge */}
+            <span className="absolute top-1.5 right-1.5 z-10 bg-emerald-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full border border-white/70 shadow">
+              可定制次数 x{hasPending ? 0 : 1}
+            </span>
+            {/* Title */}
+            <div className="absolute top-2.5 right-2 text-slate-800 font-black text-[14px] leading-none tracking-wide" style={{ textShadow: "0 1px 0 rgba(255,255,255,0.6)" }}>
+              定制专属皮肤
+            </div>
+            {/* White pill button */}
+            <div className="absolute bottom-2 left-[64px] right-3 bg-white rounded-full py-1 text-center text-slate-800 font-black text-[12px] shadow">
+              {hasPending ? "查看生成中" : "去定制"}
             </div>
           </button>
         </div>
