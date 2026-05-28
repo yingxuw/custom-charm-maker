@@ -517,35 +517,41 @@ function Screen2({
         )}
       </div>
 
-      {/* RIGHT input + presets + generate */}
+      {/* RIGHT: style cards + input + generate */}
       <div className="absolute right-3 top-[52px] bottom-3 w-[262px] flex flex-col gap-1.5 z-10">
         <div className="text-white text-[11px] font-black px-0.5">描述你想要的皮肤风格</div>
+
+        {/* 示例风格卡片 */}
+        <div className="flex gap-1.5 overflow-x-auto pb-0.5">
+          {STYLE_PRESETS.slice(0, 4).map((p, i) => {
+            const active = styleIdx === i;
+            return (
+              <button
+                key={p.t}
+                onClick={() => pickStyle(i)}
+                className={`flex-shrink-0 w-[58px] rounded-xl border-2 overflow-hidden transition ${
+                  active
+                    ? "border-yellow-300 shadow-[0_0_10px_rgba(253,224,71,0.8)] bg-white/30"
+                    : "border-white/40 bg-white/10"
+                }`}
+              >
+                <div className={`h-[48px] bg-gradient-to-br ${p.c} flex items-end justify-center overflow-hidden`}>
+                  <img src={p.img} className="h-[52px] object-contain" alt="" />
+                </div>
+                <div className={`text-[8px] font-bold py-0.5 text-center ${active ? "text-yellow-300" : "text-white"}`}>
+                  {p.t}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="比如：我想要像冰雪公主一样会发光的裙子"
           className="w-full h-[56px] rounded-xl bg-white/95 text-slate-800 text-[11px] p-2 resize-none placeholder:text-slate-400 border-2 border-white shadow-inner"
         />
-
-        <div className="text-white text-[11px] font-black mt-0.5 px-0.5 flex items-center gap-1">
-          想要哪种风格 <span className="text-white/60 font-normal text-[8px]">（点击即填入想法）</span>
-        </div>
-        <div className="grid grid-cols-4 gap-1">
-          {STYLE_PRESETS.map((p, i) => {
-            const active = styleIdx === i;
-            return (
-              <button
-                key={p.t}
-                onClick={() => pickStyle(i)}
-                className={`rounded-full bg-gradient-to-r ${p.c} text-white text-[9px] font-bold py-1 border shadow transition ${
-                  active ? "border-yellow-300 ring-2 ring-yellow-200 scale-[1.04]" : "border-white/60"
-                }`}
-              >
-                {p.t}
-              </button>
-            );
-          })}
-        </div>
 
         <div className="text-[9px] text-white/70 text-center mt-0.5 leading-tight">
           AI 会一次生成 3 款候选，最终效果以生成结果为准
