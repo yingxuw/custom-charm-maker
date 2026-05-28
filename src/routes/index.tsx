@@ -363,14 +363,14 @@ function Screen1({ onEnter, hasPending }: { onEnter: () => void; hasPending?: bo
             )}
             {/* Character on left, slightly overflowing */}
             <img src={charOriginal} alt="" className="absolute -left-2 -bottom-1 w-[70px] h-[70px] object-contain drop-shadow-md" />
-            {/* 可定制次数 badge */}
-            <span className="absolute top-1.5 right-1.5 z-10 bg-emerald-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full border border-white/70 shadow">
-              可定制次数 x{hasPending ? 0 : 1}
-            </span>
-            {/* Title */}
-            <div className="absolute top-0.5 left-[68px] right-[80px] text-slate-800 font-black text-[14px] leading-none tracking-wide text-left whitespace-nowrap" style={{ textShadow: "0 1px 0 rgba(255,255,255,0.6)" }}>
+            {/* Title - centered at top */}
+            <div className="absolute top-1 left-0 right-0 text-slate-800 font-black text-[14px] leading-none tracking-wide text-center whitespace-nowrap" style={{ textShadow: "0 1px 0 rgba(255,255,255,0.6)" }}>
               定制专属皮肤
             </div>
+            {/* 可定制次数 badge - below title, right side */}
+            <span className="absolute top-[18px] right-1.5 z-10 bg-emerald-500 text-white text-[9px] font-black px-1.5 py-[3px] rounded-full border border-white/70 shadow max-w-[120px] truncate">
+              可定制次数 x{hasPending ? 0 : 1}
+            </span>
             {/* White pill button */}
             <div className="absolute bottom-2 left-[64px] right-3 bg-white rounded-full py-1 text-center text-slate-800 font-black text-[12px] shadow">
               {hasPending ? "查看生成中" : "去定制"}
