@@ -368,7 +368,7 @@ function Screen1({ onEnter, hasPending }: { onEnter: () => void; hasPending?: bo
               可定制次数 x{hasPending ? 0 : 1}
             </span>
             {/* Title */}
-            <div className="absolute top-2.5 left-[68px] right-2 text-slate-800 font-black text-[14px] leading-none tracking-wide text-left" style={{ textShadow: "0 1px 0 rgba(255,255,255,0.6)" }}>
+            <div className="absolute top-3 left-[68px] right-[80px] text-slate-800 font-black text-[14px] leading-none tracking-wide text-left whitespace-nowrap" style={{ textShadow: "0 1px 0 rgba(255,255,255,0.6)" }}>
               定制专属皮肤
             </div>
             {/* White pill button */}
