@@ -643,11 +643,6 @@ function Screen4Generating({
       <Sparkles />
       <BackBtn onClick={onBack} />
 
-      <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
-        <div className="bg-gradient-to-r from-fuchsia-400 to-purple-500 rounded-full px-5 py-1.5 border-2 border-white shadow-lg">
-          <span className="text-white font-black text-sm drop-shadow">✨ 皮肤魔法工坊 ✨</span>
-        </div>
-      </div>
       <div className="absolute top-3 right-4 z-10"><Currency cheese={1781} /></div>
 
       {/* Magic stage */}
@@ -671,24 +666,7 @@ function Screen4Generating({
 
         <div className="text-center mt-1">
           <div className="text-white font-black text-[18px] drop-shadow">正在为你制作专属皮肤</div>
-          <div className="text-white/80 text-[11px] mt-1">请稍等一下，马上就好 ✨</div>
-        </div>
-
-        {/* progress */}
-        <div className="w-[300px] mt-1">
-          <div className="h-2.5 rounded-full bg-white/15 border border-white/30 overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-yellow-300 via-pink-400 to-fuchsia-500 transition-all"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <div className="flex justify-between text-[9px] text-white/80 mt-1 font-bold">
-            <span>预计 20 秒</span>
-            <span>高峰期最多 5 分钟</span>
-          </div>
-          <div className="text-center text-[10px] text-white/90 mt-1.5 leading-snug">
-            魔法施展中，预计 20 秒～5 分钟，请耐心等待 ✨
-          </div>
+          <div className="text-white/80 text-[11px] mt-1">正在认真制作，请稍等一下 ✨</div>
         </div>
 
         {!modal && (
