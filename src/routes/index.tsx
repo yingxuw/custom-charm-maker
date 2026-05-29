@@ -552,7 +552,7 @@ function Screen2({
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="我想要..."
+          placeholder="点击输入想法..."
           className="w-full h-[56px] rounded-xl bg-white/95 text-slate-800 text-[11px] p-2 resize-none placeholder:text-slate-400 border-2 border-white shadow-inner"
         />
 
