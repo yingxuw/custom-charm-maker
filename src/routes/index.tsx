@@ -458,7 +458,7 @@ function Screen2({
       <div className="absolute left-3 top-[52px] bottom-3 w-[150px] bg-white/12 backdrop-blur border border-white/25 rounded-2xl p-2 flex flex-col gap-1.5 z-10">
         <div>
           <div className="text-white text-[12px] font-black px-1">定制专属皮肤</div>
-          <div className="text-white/70 text-[10px] px-1 mt-0.5">选一套皮肤，开始定制</div>
+          <div className="text-white/70 text-[10px] px-1 mt-0.5">选一套皮肤，定制你的专属风格</div>
         </div>
         <div className="flex gap-1 px-1 flex-wrap">
           {["全部", "传说", "神话", "至臻"].map((t, i) => (
