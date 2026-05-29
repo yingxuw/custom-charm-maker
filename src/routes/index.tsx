@@ -456,7 +456,10 @@ function Screen2({
 
       {/* LEFT skin list */}
       <div className="absolute left-3 top-[52px] bottom-3 w-[150px] bg-white/12 backdrop-blur border border-white/25 rounded-2xl p-2 flex flex-col gap-1.5 z-10">
-        <div className="text-white text-[11px] font-black px-1">选择要定制的皮肤</div>
+        <div>
+          <div className="text-white text-[12px] font-black px-1">定制专属皮肤</div>
+          <div className="text-white/70 text-[10px] px-1 mt-0.5">选一套皮肤，开始定制</div>
+        </div>
         <div className="flex gap-1 px-1 flex-wrap">
           {["全部", "传说", "神话", "至臻"].map((t, i) => (
             <button
@@ -500,13 +503,6 @@ function Screen2({
           <div className="absolute top-2 left-2 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/30">
             预览：{previewLabel}
           </div>
-          {/* 玩法演示入口（用户主动点击） */}
-          <button
-            onClick={onOpenDemo}
-            className="absolute top-2 right-2 bg-white/90 text-fuchsia-600 text-[10px] font-black px-2 py-0.5 rounded-full border border-fuchsia-300 shadow hover:scale-105 transition"
-          >
-            🎬 玩法演示
-          </button>
           <div className="absolute bottom-1 left-0 right-0 text-center text-white/80 text-[10px]">
             模型与动作不变，仅定制服装贴图风格
           </div>
