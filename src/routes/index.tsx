@@ -520,7 +520,7 @@ function Screen2({
 
       {/* RIGHT: style cards + input + generate */}
       <div className="absolute right-3 top-[52px] bottom-3 w-[262px] flex flex-col gap-1.5 z-10">
-        <div className="text-white text-[11px] font-black px-0.5">描述你想要的皮肤风格</div>
+        <div className="text-white text-[11px] font-black px-0.5">风格灵感</div>
 
         {/* 示例风格卡片 */}
         <div className="flex gap-1.5 overflow-x-auto pb-0.5">
@@ -547,15 +547,17 @@ function Screen2({
           })}
         </div>
 
+        <div className="text-white text-[11px] font-black px-0.5 mt-0.5">定制想法</div>
+
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="比如：我想要像冰雪公主一样会发光的裙子"
+          placeholder="我想要..."
           className="w-full h-[56px] rounded-xl bg-white/95 text-slate-800 text-[11px] p-2 resize-none placeholder:text-slate-400 border-2 border-white shadow-inner"
         />
 
-        <div className="text-[9px] text-white/70 text-center mt-0.5 leading-tight">
-          AI 会一次生成 3 款候选，最终效果以生成结果为准
+        <div className="text-[9px] text-white/50 text-center mt-0.5 leading-tight">
+          以实际生成结果为准
         </div>
 
         <div className="mt-auto flex items-center justify-between px-1 pt-1">
