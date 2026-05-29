@@ -504,7 +504,7 @@ function Screen2({
             预览：{previewLabel}
           </div>
           <div className="absolute bottom-1 left-0 right-0 text-center text-white/80 text-[10px]">
-            模型与动作不变，仅定制服装贴图风格
+            {"\n"}
           </div>
         </div>
 
