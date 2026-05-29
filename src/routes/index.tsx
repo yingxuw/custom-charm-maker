@@ -680,12 +680,7 @@ function Screen4Generating({
               确定要离开吗？
             </div>
             <div className="mt-3 text-slate-700 text-[12px] leading-relaxed text-center">
-              当前生成任务<b className="text-fuchsia-600">仍会继续</b>，<br />
-              完成后请回到<b>「亲子学盒」</b>入口查看，<br />
-              该入口会出现<span className="inline-flex items-center mx-0.5 align-middle"><span className="w-1.5 h-1.5 bg-rose-500 rounded-full" /></span>红点提醒。
-            </div>
-            <div className="mt-2 rounded-xl bg-amber-50 border border-amber-200 px-3 py-1.5 text-[11px] text-amber-700 font-bold text-center">
-              ⚠ 本次机会已扣除（生成中退出不取消任务）
+              当前生成任务仍会继续，可随时回来查看结果
             </div>
             <div className="flex gap-2 mt-3">
               <GameBtn variant="ghost" onClick={onLeave} className="flex-1 py-2 text-[12px] !text-slate-700 !bg-slate-100 !border-slate-300">
