@@ -441,11 +441,6 @@ function Screen2({
     <div className={`relative w-full h-full ${dreamBg}`}>
       <Sparkles />
       <BackBtn />
-      <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-10">
-        <div className="bg-gradient-to-r from-amber-300 to-orange-400 rounded-full px-5 py-1.5 border-2 border-white shadow-lg">
-          <span className="text-white font-black text-sm drop-shadow">✨ AI 定制皮肤 ✨</span>
-        </div>
-      </div>
       <div className="absolute top-2.5 right-4 z-10 flex items-center gap-2">
         <button
           onClick={() => setIsVip(!isVip)}
