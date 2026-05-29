@@ -643,8 +643,6 @@ function Screen4Generating({
       <Sparkles />
       <BackBtn onClick={onBack} />
 
-      <div className="absolute top-3 right-4 z-10"><Currency cheese={1781} /></div>
-
       {/* Magic stage */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 pt-8">
         <div className="relative w-[200px] h-[200px]">
