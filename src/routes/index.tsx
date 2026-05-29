@@ -626,7 +626,7 @@ function Screen4Generating({
   onLeave?: () => void;
   onStay?: () => void;
 }) {
-  const [progress, setProgress] = useState(12);
+  const [, setProgress] = useState(12);
   useEffect(() => {
     if (modal) return;
     const id = setInterval(() => {
